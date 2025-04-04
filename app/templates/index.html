@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container text-center mt-5 vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100">
+        <div class="col-md-6 d-flex flex-column justify-content-start align-items-start">
+            <h1 class="display-3 p-3"><strong>MCCI</strong></h1>
+            <p class="fs-4 text-start p-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur,
+                reiciendis? Illo, itaque saepe odio fugit fuga,
+                dolorem sit reprehenderit molestias sed numquam officiis nesciunt id, officia dolor est similique.
+                Inventore!</p>
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center gap-3">
+            <h2>Bienvenido a la plataforma</h2>
+            <div class="d-flex flex-column gap-3 w-50 justify-content-center align-items-center">
+                <a href="{{ url_for('main.login') }}" class="btn btn-primary w-75">Iniciar Sesión</a>
+                <a href="{{ url_for('main.register') }}" class="btn btn-success w-75">Registrarse</a>
+                <a href="{{ url_for('main.listado') }}" class="btn btn-info w-75">Listado</a>
+                <a href="{{ url_for('main.ingresar_peticion') }}" class="btn btn-info w-75">Ingresar mi petición</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
