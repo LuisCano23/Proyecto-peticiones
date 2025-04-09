@@ -1,4 +1,79 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<div class="modal fade" id="modalAgregar" tabindex="-1" aria-labelledby="modalAgregarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAgregarLabel">Registrar Nuevo Discípulo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        {{ form.nombres.label(class="form-label") }}
+                        {{ form.nombres(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.apellidos.label(class="form-label") }}
+                        {{ form.apellidos(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.telefono.label(class="form-label") }}
+                        {{ form.telefono(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.genero.label(class="form-label") }}
+                        {{ form.genero(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.lider.label(class="form-label") }}
+                        {{ form.lider(class="form-select") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.direccion.label(class="form-label") }}
+                        {{ form.direccion(class="form-control") }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="text-center w-100">Listado de discípulos</h1>
+                <button class="btn btn-success ms-3" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+                    Agregar
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    {% for discipulo in discipulos %}
+                    <div class="row mb-3 border-bottom pb-2">
+                        <div class="col-md-4">
+                            <strong>{{ discipulo.nombres }}</strong>
+                        </div>
+                        <div class="col-md-4">
+                            {{ discipulo.apellidos }}
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <a href="" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="" class="btn btn-danger btn-sm">Eliminar</a>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

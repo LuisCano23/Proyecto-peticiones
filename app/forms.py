@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo
 
 class RegisterForm(FlaskForm):
@@ -18,3 +18,19 @@ class LoginForm(FlaskForm):
     password = PasswordField('Contraseña', validators=[DataRequired()])
     remember = BooleanField('Recuérdame')
     submit = SubmitField('Iniciar sesión')
+
+class DiscipuloForm(FlaskForm):
+    nombres = StringField('Nombres', validators=[DataRequired(), Length(min=2, max=100)])
+    apellidos = StringField('Apellidos', validators=[DataRequired(), Length(min=2, max=100)])
+    telefono = StringField('Teléfono', validators=[DataRequired(), Length(min=9, max=15)])
+    genero = SelectField('Género', validators=[DataRequired()])
+    lider = SelectField('Lider', coerce=int, validators=[DataRequired()])
+    direccion = StringField('Dirección', validators=[DataRequired()])
+    submit = SubmitField('Registrar Discipulo')
+
+class PeticionesForm(FlaskForm):
+    nombre = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=100)])
+    telefono = StringField('Teléfono', validators=[DataRequired(), Length(min=9, max=15)])
+    peticion = StringField('Petición', validators=[DataRequired(), Length(min=2, max=500)])
+    invasion = BooleanField('Invasión')
+    submit = SubmitField('Registrar Petición')

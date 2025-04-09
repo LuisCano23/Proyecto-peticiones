@@ -1,30 +1,31 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from config import Config  # Asumiendo que config.py está junto a __init__.py
+from flask_login import LoginManager
+from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
+login_manager = LoginManager()  
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Inicializar extensiones
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)  
+    login_manager.login_view = 'login'  
 
-    # Importar modelos dentro del contexto de la app
     with app.app_context():
-        from . import models  # models.py está en la misma carpeta que __init__.py
+        from . import models
 
-    # Registrar blueprints
-    # Opción 1: Import relativo si 'app' es una subcarpeta de 'peticiones'
+        @login_manager.user_loader
+        def load_user(user_id):
+            from .models import User
+            return User.query.get(int(user_id))
+
     from .routes import bp
     app.register_blueprint(bp)
-
-    # Si en lugar de eso tuvieras un paquete "peticiones.app" y quisieras importar con el nombre completo:
-    # from peticiones.app.routes import bp
-    # app.register_blueprint(bp)
 
     return app

@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, login_user, logout_user
 from app import db 
-from .models import User
-from .forms import RegisterForm, LoginForm
+from .models import User, Discipulo
+from .forms import RegisterForm, LoginForm, DiscipuloForm, PeticionesForm
 
 bp = Blueprint('main', __name__)
 
@@ -38,11 +38,11 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):  
             login_user(user, remember=form.remember.data)
-            return redirect(url_for('main.index'))  
+            return redirect(url_for('main.listado'))  
         else:
             flash('Número de teléfono o contraseña incorrectos', 'danger')
 
-    return render_template('security/login.html')
+    return render_template('security/login.html', form=form)
 
 @bp.route('/logout')
 @login_required
@@ -50,10 +50,30 @@ def logout():
     logout_user()
     return redirect(url_for('main.index'))
 
-@bp.route('/listado')
+
+@bp.route('/listado', methods=['GET', 'POST'])
+@login_required
 def listado():
-    return render_template('listado.html')
+    lideres = User.query.all()
+    discipulos = Discipulo.query.all()
+    form = DiscipuloForm(request.form)
+    form.lider.choices = [(lider.id, f"{lider.nombres} {lider.apellidos}") for lider in lideres]
+    form.genero.choices = [('Masculino', 'Masculino'), ('Femenino', 'Femenino')]
+    if request.method == 'POST' and form.validate_on_submit():
+        discipulo = Discipulo(
+            nombres=form.nombres.data,
+            apellidos=form.apellidos.data,
+            telefono=form.telefono.data,
+            genero=form.genero.data,
+            lider_id=form.lider.data,
+            direccion=form.direccion.data
+        )
+        db.session.add(discipulo)
+        db.session.commit()
+        return redirect(url_for('main.listado'))
+    return render_template('listado.html', lideres=lideres, form=form, discipulos=discipulos)
 
 @bp.route('/ingresar_peticion')
 def ingresar_peticion():
+    
     return render_template('peticion.html')
