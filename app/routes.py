@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, login_user, logout_user
 from app import db 
-from .models import User, Discipulo
+from .models import User, Discipulo, Peticiones
 from .forms import RegisterForm, LoginForm, DiscipuloForm, PeticionesForm
 
 bp = Blueprint('main', __name__)
@@ -73,7 +73,23 @@ def listado():
         return redirect(url_for('main.listado'))
     return render_template('listado.html', lideres=lideres, form=form, discipulos=discipulos)
 
-@bp.route('/ingresar_peticion')
+@bp.route('/ingresar_peticion', methods=['GET', 'POST'])
 def ingresar_peticion():
-    
-    return render_template('peticion.html')
+    form = PeticionesForm(request.form)
+    if request.method == 'POST' and form.validate_on_submit():
+        peticion = Peticiones(
+            nombre=form.nombre.data,
+            telefono=form.telefono.data,
+            peticion=form.peticion.data,
+            invasion=1 if form.invasion.data else 0
+        )
+        db.session.add(peticion)
+        db.session.commit()
+        return redirect(url_for('main.index'))
+    return render_template('peticion.html', form=form)
+
+@bp.route('/intersecion')
+@login_required
+def intersecion():
+    peticiones = Peticiones.query.all()
+    return render_template('intersecion.html', peticiones=peticiones)

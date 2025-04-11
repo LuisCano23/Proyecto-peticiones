@@ -1,4 +1,31 @@
 {% extends "base.html" %}
 
-{% block content %} 
+{% block content %}
+<div class="container mt-4">
+    <h2>Ingresa tu petición de oración</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }} 
+
+        <div class="mb-3">
+            {{ form.nombre.label(class="form-label") }}
+            {{ form.nombre(class="form-control", placeholder="Nombre") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.telefono.label(class="form-label") }}
+            {{ form.telefono(class="form-control", placeholder="Teléfono") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.peticion.label(class="form-label") }}
+            {{ form.peticion(class="form-control", placeholder="Escribe tu petición") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.invasion.label(class="form-check-label") }}
+            {{ form.invasion(class="form-check-input") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+    </form> 
 {% endblock content %}
