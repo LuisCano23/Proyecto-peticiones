@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% set navbar=true %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="col-md-6 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="text-center mb-4">
+                    <i class="bi bi-pencil-square me-2"></i> Editar Discípulo
+                </h2>
+
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    {% for field in [form.nombres, form.apellidos, form.telefono, form.genero, form.lider, form.direccion] %}
+                    <div class="mb-3">
+                        {{ field.label(class="form-label") }}
+                        {{ field(class="form-control") }}
+                    </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from app import db 
 from .models import User, Discipulo, Peticiones
 from .forms import RegisterForm, LoginForm, DiscipuloForm, PeticionesForm
@@ -54,10 +54,11 @@ def logout():
 @bp.route('/listado', methods=['GET', 'POST'])
 @login_required
 def listado():
+    consolidacion = current_user.soy_de_consolidacion
     lideres = User.query.all()
     discipulos = Discipulo.query.all()
     form = DiscipuloForm(request.form)
-    form.lider.choices = [(lider.id, f"{lider.nombres} {lider.apellidos}") for lider in lideres]
+    form.lider.choices = [(None, "Ninguno")] + [(lider.id, f"{lider.nombres} {lider.apellidos}") for lider in lideres]
     form.genero.choices = [('Masculino', 'Masculino'), ('Femenino', 'Femenino')]
     if request.method == 'POST' and form.validate_on_submit():
         discipulo = Discipulo(
@@ -71,7 +72,40 @@ def listado():
         db.session.add(discipulo)
         db.session.commit()
         return redirect(url_for('main.listado'))
-    return render_template('listado.html', lideres=lideres, form=form, discipulos=discipulos)
+    return render_template('listado.html', lideres=lideres, form=form, discipulos=discipulos, consolidacion=consolidacion)
+
+@bp.route('/discipulo/<int:id>/eliminar', methods=['POST'])
+@login_required
+def eliminar_discipulo(id):
+    discipulo = Discipulo.query.get_or_404(id)
+    db.session.delete(discipulo)
+    db.session.commit()
+    return redirect(url_for('main.listado'))
+
+
+@bp.route('/discipulo/<int:id>/editar', methods=['GET', 'POST'])
+@login_required
+def editar_discipulo(id):
+    discipulo = Discipulo.query.get_or_404(id)
+    form = DiscipuloForm(obj=discipulo)
+
+    lideres = User.query.all()
+    form.lider.choices = [(None, "Ninguno")] + [(lider.id, f"{lider.nombres} {lider.apellidos}") for lider in lideres]
+    form.genero.choices = [('Masculino', 'Masculino'), ('Femenino', 'Femenino')]
+
+    if request.method == 'POST' and form.validate_on_submit():
+        discipulo.nombres = form.nombres.data
+        discipulo.apellidos = form.apellidos.data
+        discipulo.telefono = form.telefono.data
+        discipulo.genero = form.genero.data
+        discipulo.lider_id = form.lider.data
+        discipulo.direccion = form.direccion.data
+
+        db.session.commit()
+        return redirect(url_for('main.listado'))
+
+    return render_template('editar_discipulo.html', form=form, discipulo=discipulo)
+
 
 @bp.route('/ingresar_peticion', methods=['GET', 'POST'])
 def ingresar_peticion():
@@ -93,3 +127,9 @@ def ingresar_peticion():
 def intersecion():
     peticiones = Peticiones.query.all()
     return render_template('intersecion.html', peticiones=peticiones)
+
+@bp.route('/discipulo/<int:id>')
+@login_required
+def discipulo_detail(id):
+    discipulo = Discipulo.query.get_or_404(id)
+    return render_template('discipulo_detail.html', discipulo=discipulo)

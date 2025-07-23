@@ -2,47 +2,61 @@
 {% set navbar=true %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Registro</h2>
-    <form method="POST">
-        {{ form.hidden_tag() }} 
+<div class="container my-5">
+    <div class="col-md-6 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="text-center mb-4">
+                    <i class="bi bi-person-plus-fill me-2"></i> Registro de Usuario
+                </h2>
+                <p class="text-center text-muted mb-4">
+                    Completa los campos para crear una nueva cuenta.
+                </p>
 
-        <div class="mb-3">
-            {{ form.nombres.label(class="form-label") }}
-            {{ form.nombres(class="form-control", placeholder="Nombres") }}
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.nombres.label(class="form-label") }}
+                        {{ form.nombres(class="form-control", placeholder="Nombres") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.apellidos.label(class="form-label") }}
+                        {{ form.apellidos(class="form-control", placeholder="Apellidos") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-control", placeholder="Nombre de usuario") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.telefono.label(class="form-label") }}
+                        {{ form.telefono(class="form-control", placeholder="Teléfono") }}
+                    </div>
+
+                    <div class="form-check mb-3">
+                        {{ form.soy_de_consolidacion(class="form-check-input") }}
+                        {{ form.soy_de_consolidacion.label(class="form-check-label") }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control", placeholder="Contraseña") }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-control", placeholder="Confirmar contraseña") }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        {{ form.submit.label.text }}
+                    </button>
+                </form>
+            </div>
         </div>
-
-        <div class="mb-3">
-            {{ form.apellidos.label(class="form-label") }}
-            {{ form.apellidos(class="form-control", placeholder="Apellidos") }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.username.label(class="form-label") }}
-            {{ form.username(class="form-control", placeholder="Crea un nombre de usuario") }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.telefono.label(class="form-label") }}
-            {{ form.telefono(class="form-control", placeholder="Teléfono") }}
-        </div>
-
-        <div class="mb-3 form-check">
-            {{ form.soy_de_consolidacion(class="form-check-input") }}
-            {{ form.soy_de_consolidacion.label(class="form-check-label") }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.password.label(class="form-label") }}
-            {{ form.password(class="form-control", placeholder="Contraseña") }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.confirm_password.label(class="form-label") }}
-            {{ form.confirm_password(class="form-control", placeholder="Confirmar Contraseña") }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
-    </form>
+    </div>
 </div>
 {% endblock content %}

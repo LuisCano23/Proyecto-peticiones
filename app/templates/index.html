@@ -2,31 +2,43 @@
 {% set navbar=true %}
 
 {% block content %}
-<div class="container text-center mt-5 vh-100 d-flex align-items-center justify-content-center">
+<div class="container mt-5 vh-100 d-flex align-items-center justify-content-center">
     <div class="row w-100">
-        <div class="col-md-6 d-flex flex-column justify-content-start align-items-start">
-            <h1 class="display-3 p-3"><strong>MCCI</strong></h1>
-            <p class="fs-4 text-start p-3">
-                Lideres recuerden que nuestra vision es:
-            </p>
-                <li class="text-start"><strong>GANAR</strong></li> 
-                <li><strong>CONSOLIDAR</strong></li>
-                <li><strong>DISCIPULAR</strong></li></liDISCIPULAR>
-                <li><strong>ENVIAR</strong></li>
-             <p class="fs-4 text-start p-3">
-                No descuiden  la vision y siempre pongan en practica nuestros valores
-                <li><strong>DISCIPULADO</strong></li>
-                <li><strong>PROPÓSITO</strong></li> 
-                <li><strong>SERVICIO</strong></li> 
-                <p class="fs-4 text-start p-3">Asi podremos afirmar los frutos para Nuestro Señor</p>
-            </p>
+        <div class="col-md-6 d-flex flex-column justify-content-start">
+            <div class="bg-light p-4 rounded shadow-sm">
+                <h1 class="display-4 fw-bold mb-4">MCCI</h1>
+                
+                <p class="fs-5 mb-2">Líderes, recuerden que nuestra visión es:</p>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item"><strong>GANAR</strong></li>
+                    <li class="list-group-item"><strong>CONSOLIDAR</strong></li>
+                    <li class="list-group-item"><strong>DISCIPULAR</strong></li>
+                    <li class="list-group-item"><strong>ENVIAR</strong></li>
+                </ul>
+
+                <p class="fs-5 mb-2">No descuiden la visión y siempre practiquen nuestros valores:</p>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item"><strong>DISCIPULADO</strong></li>
+                    <li class="list-group-item"><strong>PROPÓSITO</strong></li>
+                    <li class="list-group-item"><strong>SERVICIO</strong></li>
+                </ul>
+
+                <p class="fs-5">Así podremos afirmar los frutos para Nuestro Señor.</p>
+            </div>
         </div>
-        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center gap-3">
-            <h2>Bienvenido a la plataforma</h2>
-            <div class="d-flex flex-column gap-3 w-50 justify-content-center align-items-center">
-                <a href="{{ url_for('main.login') }}" class="btn btn-primary w-75">Iniciar Sesión</a>
-                <a href="{{ url_for('main.register') }}" class="btn btn-success w-75">Registrarse</a>
-                <a href="{{ url_for('main.ingresar_peticion') }}" class="btn btn-info w-75">Ingresar mi petición</a>
+
+        <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+            <div class="text-center">
+                <h2 class="mb-4">Bienvenido a la plataforma</h2>
+                <div class="d-flex flex-column gap-3 w-75 mx-auto">
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('main.ingresar_peticion') }}" class="btn btn-info btn-lg">Ingresar petición</a>
+                    {% else %}
+                    <a href="{{ url_for('main.login') }}" class="btn btn-primary btn-lg">Iniciar Sesión</a>
+                    <a href="{{ url_for('main.register') }}" class="btn btn-success btn-lg">Registrarse</a>
+                    <a href="{{ url_for('main.ingresar_peticion') }}" class="btn btn-info btn-lg">Ingresar petición</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

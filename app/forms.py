@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
-from wtforms.validators import DataRequired, Length, EqualTo
+from wtforms.validators import DataRequired, Length, EqualTo, Optional
 
 class RegisterForm(FlaskForm):
     nombres = StringField('Nombres', validators=[DataRequired(), Length(min=2, max=100)])
@@ -24,7 +24,7 @@ class DiscipuloForm(FlaskForm):
     apellidos = StringField('Apellidos', validators=[DataRequired(), Length(min=2, max=100)])
     telefono = StringField('Teléfono', validators=[DataRequired(), Length(min=9, max=15)])
     genero = SelectField('Género', validators=[DataRequired()])
-    lider = SelectField('Lider', coerce=int, validators=[DataRequired()])
+    lider = SelectField('Líder', coerce=lambda x: int(x) if x and x != 'None' else None, validators=[Optional()])
     direccion = StringField('Dirección', validators=[DataRequired()])
     submit = SubmitField('Registrar Discipulo')
 

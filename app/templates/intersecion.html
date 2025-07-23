@@ -3,38 +3,29 @@
 
 {% block content %}
 <div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h1 class="text-center w-100">Peticiones de oración</h1>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    {% for peticion in peticiones %}
-                    <div class="row mb-3 border-bottom pb-2">
-                        <div class="col-md-4">
-                            <strong>{{ peticion.nombre }}</strong>
-                        </div>
-                        <div class="col-md-4">
-                            {{ peticion.peticion }}
-                        </div>
-                        <div class="col-md-4">
-                            {{ peticion.telefono}}
-                        </div>
-                        {% if peticion.invasion == 1 %}
-                            <div class="col-md-4">
-                                <span class="badge bg-success">Invasión</span>
-                            </div>
-                        {% else %}
-                            <div class="col-md-4">
-                                <span class="badge bg-danger">Invasión</span>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    </div>
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">Peticiones de oración</h1>
+        <p class="text-muted">Estas son las peticiones recibidas. Ora por cada una con fe 🙏</p>
+    </div>
+
+    <div class="row row-cols-1 g-3">
+        {% for peticion in peticiones %}
+        <div class="col">
+            <div class="border-start border-4 border-primary bg-light rounded shadow-sm p-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">{{ peticion.nombre }}</h5>
+                    {% if peticion.invasion == 1 %}
+                        <span class="badge bg-success">Invasión</span>
+                    {% else %}
+                        <span class="badge bg-danger">Sin Invasión</span>
+                    {% endif %}
                 </div>
+
+                <p class="mb-2"><strong>Petición:</strong> {{ peticion.peticion }}</p>
+                <p class="mb-0 text-muted"><strong>Teléfono:</strong> {{ peticion.telefono }}</p>
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock content %}

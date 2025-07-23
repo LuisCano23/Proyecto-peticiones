@@ -2,27 +2,39 @@
 {% set navbar=true %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Registro</h2>
-    <form method="POST">
-        {{ form.hidden_tag() }}  
+<div class="container vh-100 d-flex align-items-center justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm p-4">
+            <h2 class="text-center mb-4">
+                <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
+            </h2>
+            <p class="text-center text-muted mb-4">
+                Ingresa tus datos para acceder a la plataforma
+            </p>
 
-        <div class="mb-3">
-            {{ form.username.label(class="form-label") }}
-            {{ form.username(class="form-control", placeholder="Crea un nombre de usuario") }}
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="mb-3">
+                    {{ form.username.label(class="form-label") }}
+                    {{ form.username(class="form-control", placeholder="Nombre de usuario") }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control", placeholder="Contraseña") }}
+                </div>
+
+                <div class="form-check mb-4">
+                    {{ form.remember(class="form-check-input") }}
+                    {{ form.remember.label(class="form-check-label") }}
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    {{ form.submit.label.text }}
+                </button>
+            </form>
         </div>
-
-        <div class="mb-3">
-            {{ form.password.label(class="form-label") }}
-            {{ form.password(class="form-control", placeholder="Contraseña") }}
-        </div>
-
-        <div class="mb-3">
-            {{ form.remember.label(class="form-check-label") }}
-            {{ form.remember(class="form-check-input") }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
-    </form>
+    </div>
 </div>
 {% endblock content %}

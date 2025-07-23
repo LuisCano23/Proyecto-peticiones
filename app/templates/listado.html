@@ -13,30 +13,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
+                    {% for field in [form.nombres, form.apellidos, form.telefono, form.genero, form.lider,
+                    form.direccion] %}
                     <div class="mb-3">
-                        {{ form.nombres.label(class="form-label") }}
-                        {{ form.nombres(class="form-control") }}
+                        {{ field.label(class="form-label") }}
+                        {{ field(class="form-control") }}
                     </div>
-                    <div class="mb-3">
-                        {{ form.apellidos.label(class="form-label") }}
-                        {{ form.apellidos(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.telefono.label(class="form-label") }}
-                        {{ form.telefono(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.genero.label(class="form-label") }}
-                        {{ form.genero(class="form-control") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.lider.label(class="form-label") }}
-                        {{ form.lider(class="form-select") }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.direccion.label(class="form-label") }}
-                        {{ form.direccion(class="form-control") }}
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -48,33 +31,64 @@
 </div>
 
 <div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h1 class="text-center w-100">Listado de discípulos</h1>
-                <button class="btn btn-success ms-3" data-bs-toggle="modal" data-bs-target="#modalAgregar">
-                    Agregar
-                </button>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    {% for discipulo in discipulos %}
-                    <div class="row mb-3 border-bottom pb-2">
-                        <div class="col-md-4">
-                            <strong>{{ discipulo.nombres }}</strong>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="m-0">Listado de discípulos</h1>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+            Nuevo
+        </button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for discipulo in discipulos %}
+        <div class="col">
+            <div class="border rounded shadow-sm bg-light p-3 h-100">
+                <h5 class="mb-1">{{ discipulo.nombres }} {{ discipulo.apellidos }}</h5>
+                <p class="mb-1"><strong>Teléfono:</strong> {{ discipulo.telefono }}</p>
+                <p class="mb-1"><strong>Género:</strong> {{ discipulo.genero }}</p>
+                <p class="mb-1">
+                    <strong>Líder:</strong>
+                    {% if discipulo.lider %}
+                    <span>{{ discipulo.lider.nombres }} {{ discipulo.lider.apellidos }}</span>
+                    {% else %}
+                    <span class="text-muted fst-italic">No asignado</span>
+                    {% endif %}
+                </p>
+                <p class="mb-2"><strong>Dirección:</strong> {{ discipulo.direccion }}</p>
+
+                {% if consolidacion == 1 %}
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ url_for('main.editar_discipulo', id=discipulo.id) }}"
+                        class="btn btn-warning btn-sm">Editar</a>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#modalEliminar{{ discipulo.id }}">
+                        Borrar
+                    </button>
+                </div>
+                <div class="modal fade" id="modalEliminar{{ discipulo.id }}" tabindex="-1"
+                    aria-labelledby="modalLabel{{ discipulo.id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="POST" action="{{ url_for('main.eliminar_discipulo', id=discipulo.id) }}">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalLabel{{ discipulo.id }}">Confirmar eliminación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Estás seguro de que deseas eliminar a <strong>{{ discipulo.nombres }} {{ discipulo.apellidos
+                                        }}</strong>? Esta acción no se puede deshacer.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="col-md-4">
-                            {{ discipulo.apellidos }}
-                        </div>
-                        <div class="col-md-4 text-end">
-                            <a href="" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="" class="btn btn-danger btn-sm">Eliminar</a>
-                        </div>
-                    {% endfor %}
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock content %}
