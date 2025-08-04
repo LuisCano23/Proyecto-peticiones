@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, login_user, logout_user, current_user
 from app import db 
-from .models import User, Discipulo, Peticiones
-from .forms import RegisterForm, LoginForm, DiscipuloForm, PeticionesForm
+from .models import User, Discipulo, Peticiones, Nota
+from .forms import RegisterForm, LoginForm, DiscipuloForm, PeticionesForm, NotaForm
 
 bp = Blueprint('main', __name__)
 
@@ -128,8 +128,25 @@ def intersecion():
     peticiones = Peticiones.query.all()
     return render_template('intersecion.html', peticiones=peticiones)
 
-@bp.route('/discipulo/<int:id>')
+@bp.route('/detalle_discipulo/<int:id>', methods=['GET', 'POST'])
 @login_required
-def discipulo_detail(id):
+def detalle_discipulo(id):
     discipulo = Discipulo.query.get_or_404(id)
-    return render_template('discipulo_detail.html', discipulo=discipulo)
+    form = NotaForm()
+
+    if discipulo.lider_id != current_user.id:
+        return redirect(url_for('main.listado'))
+    
+    if form.validate_on_submit():
+        nota = Nota(
+            contenido=form.contenido.data,
+            discipulo_id=form.discipulo_id.data
+        )
+        db.session.add(nota)
+        db.session.commit()
+        return redirect(url_for('main.detalle_discipulo', id=id))
+    form.discipulo_id.data = id
+
+    notas = Nota.query.filter_by(discipulo_id=id).order_by(Nota.fecha.desc()).all()
+
+    return render_template('detalle_discipulo.html', discipulo=discipulo, form=form, notas=notas)

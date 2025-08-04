@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% set navbar=true %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="col-md-8 mx-auto">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="mb-4 text-center">
+                    <i class="bi bi-person-lines-fill me-2"></i>Detalle del Discípulo
+                </h2>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Nombre:</strong> {{ discipulo.nombres }} {{ discipulo.apellidos }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Teléfono:</strong> {{ discipulo.telefono }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Género:</strong> {{ discipulo.genero }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Dirección:</strong> {{ discipulo.direccion }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Fecha de registro:</strong> {{ discipulo.fecha.strftime('%d/%m/%Y') }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Líder asignado:</strong>
+                        {% if discipulo.lider %}
+                        {{ discipulo.lider.nombres }} {{ discipulo.lider.apellidos }}
+                        {% else %}
+                        <span class="text-muted fst-italic">No asignado</span>
+                        {% endif %}
+                    </li>
+                </ul>
+                <hr class="my-4">
+
+                <h4 class="mb-3 text-center">
+                    <i class="bi bi-journal-text me-2"></i>Notas del discípulo
+                </h4>
+
+                <div class="text-center mb-3">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNota">
+                        <i class="bi bi-plus-circle me-1"></i>Agregar Nota
+                    </button>
+                </div>
+
+                <ul class="list-group mb-4">
+                    {% for nota in notas %}
+                    <li class="list-group-item">
+                        <p class="mb-1">{{ nota.contenido }}</p>
+                        <small class="text-muted d-block text-end">{{ nota.fecha.strftime('%d/%m/%Y') }}</small>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item text-muted text-center">No hay notas registradas aún.</li>
+                    {% endfor %}
+                </ul>
+
+                <div class="modal fade" id="modalNota" tabindex="-1" aria-labelledby="modalNotaLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <form method="POST">
+                                {{ form.hidden_tag() }}
+                                {{ form.discipulo_id }}
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalNotaLabel">Agregar Nueva Nota</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        {{ form.contenido.label(class="form-label") }}
+                                        {{ form.contenido(class="form-control", rows=4, placeholder="Escribe una nota sobre el discípulo...") }}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    {{ form.submit(class="btn btn-primary") }}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <a href="{{ url_for('main.listado') }}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Volver al listado
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

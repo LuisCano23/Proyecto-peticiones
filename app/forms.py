@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, HiddenField, TextAreaField
 from wtforms.validators import DataRequired, Length, EqualTo, Optional
 
 class RegisterForm(FlaskForm):
@@ -34,3 +34,8 @@ class PeticionesForm(FlaskForm):
     peticion = StringField('Petición', validators=[DataRequired(), Length(min=2, max=500)])
     invasion = BooleanField('Invasión')
     submit = SubmitField('Registrar Petición')
+
+class NotaForm(FlaskForm):
+    discipulo_id = HiddenField("ID del discípulo", validators=[DataRequired()])
+    contenido = TextAreaField("Contenido", validators=[DataRequired(), Length(max=500)])
+    submit = SubmitField("Agregar Nota")

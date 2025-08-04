@@ -37,6 +37,8 @@ class Discipulo(db.Model):
     
     fecha = db.Column(db.DateTime, default=datetime.utcnow)
 
+    notas = db.relationship('Nota', back_populates='discipulo', cascade='all, delete-orphan')
+
     lider = db.relationship('User', backref=db.backref('discipulos', lazy=True))
 
 class Peticiones(db.Model):
@@ -48,3 +50,13 @@ class Peticiones(db.Model):
     peticion = db.Column(db.String(500), nullable=False)
     # contactado = dato que será definido por selección (rrss, contacto directo, ninguna, etc)
     invasion = db.Column(db.Integer, default=0)
+
+class Nota(db.Model):
+    __tablename__ = 'notas'
+
+    id = db.Column(db.Integer, primary_key=True)
+    discipulo_id = db.Column(db.Integer, db.ForeignKey('discipulo.id'), nullable=False)
+    contenido = db.Column(db.String(500), nullable=False)
+    fecha = db.Column(db.DateTime, default=datetime.utcnow)
+
+    discipulo = db.relationship('Discipulo', back_populates='notas')
