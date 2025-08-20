@@ -22,7 +22,12 @@
                 </div>
 
                 <p class="mb-2"><strong>Petición:</strong> {{ peticion.peticion }}</p>
-                <p class="mb-0 text-muted"><strong>Teléfono:</strong> {{ peticion.telefono }}</p>
+                <p class="mb-2"><strong>Teléfono:</strong> {{ peticion.telefono }}</p>
+                {% if peticion.visita == 1 %}
+                <p class="mb-0"><strong>Visita:</strong> Sí</p>
+                {% else %}
+                <p class="mb-0"><strong>Visita:</strong> No</p>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

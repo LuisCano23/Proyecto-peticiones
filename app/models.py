@@ -47,9 +47,9 @@ class Peticiones(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
     telefono = db.Column(db.String(15), nullable=False)
-    peticion = db.Column(db.String(500), nullable=False)
-    # contactado = dato que será definido por selección (rrss, contacto directo, ninguna, etc)
+    peticion = db.Column(db.String(500), nullable=False) 
     invasion = db.Column(db.Integer, default=0)
+    visita = db.Column(db.Integer, default=0)
 
 class Nota(db.Model):
     __tablename__ = 'notas'

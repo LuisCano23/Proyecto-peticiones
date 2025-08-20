@@ -115,6 +115,7 @@ def ingresar_peticion():
             nombre=form.nombre.data,
             telefono=form.telefono.data,
             peticion=form.peticion.data,
+            visita=1 if form.visita.data else 0,
             invasion=1 if form.invasion.data else 0
         )
         db.session.add(peticion)

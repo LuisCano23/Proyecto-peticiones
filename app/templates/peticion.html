@@ -29,6 +29,12 @@
                         {{ form.peticion.label(class="form-label") }}
                         {{ form.peticion(class="form-control", placeholder="Escribe tu petición aquí", rows="4") }}
                     </div>
+                    
+                    <div class="form-check mb-4">
+                        {{ form.visita(class="form-check-input") }}
+                        {{ form.visita.label(class="form-check-label") }}
+                        <span class="fst-italic">(Si deseas recibir una visita por tu petición marca esta casilla.)</span>
+                    </div>
 
                     <div class="form-check mb-4">
                         {{ form.invasion(class="form-check-input") }}

@@ -32,6 +32,7 @@ class PeticionesForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired(), Length(min=2, max=100)])
     telefono = StringField('Teléfono', validators=[DataRequired(), Length(min=9, max=15)])
     peticion = StringField('Petición', validators=[DataRequired(), Length(min=2, max=500)])
+    visita = BooleanField('Visita')
     invasion = BooleanField('Invasión')
     submit = SubmitField('Registrar Petición')
 
