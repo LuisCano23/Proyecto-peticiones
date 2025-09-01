@@ -50,4 +50,31 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="confirmModalLabel"><i class="bi bi-check-circle-fill me-2"></i> ¡Petición enviada!</h5>
+      </div>
+      <div class="modal-body text-center">
+        <p>Tu petición fue recibida exitosamente 🙏</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <a href="{{ url_for('main.ingresar_peticion') }}" class="btn btn-primary">
+          Ingresar otra petición
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% if enviado %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      var modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+      modal.show();
+
+      document.querySelector("form").reset();
+  });
+</script>
+{% endif %}
 {% endblock content %}

@@ -109,7 +109,9 @@ def editar_discipulo(id):
 
 @bp.route('/ingresar_peticion', methods=['GET', 'POST'])
 def ingresar_peticion():
-    form = PeticionesForm(request.form)
+    form = PeticionesForm()
+    enviado = False
+
     if request.method == 'POST' and form.validate_on_submit():
         peticion = Peticiones(
             nombre=form.nombre.data,
@@ -120,8 +122,11 @@ def ingresar_peticion():
         )
         db.session.add(peticion)
         db.session.commit()
-        return redirect(url_for('main.index'))
-    return render_template('peticion.html', form=form)
+
+        enviado = True
+        form = PeticionesForm()
+
+    return render_template('peticion.html', form=form, enviado=enviado)
 
 @bp.route('/intersecion')
 @login_required
